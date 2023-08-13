@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InterviewToDo.MainPage"
+             xmlns:viewmodel="clr-namespace:InterviewToDo.ViewModels"
+             xmlns:model="clr-namespace:InterviewToDo.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Todo List"
+             x:DataType="viewmodel:MainViewModel"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+    <ListView Grid.Row="0" Grid.RowSpan="2"
+              ItemsSource="{Binding Items}"
+              x:Name="todoLists"
+              ItemSelected="todoLists_ItemSelected">
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="{x:Type model:TodoList}">
+               <ViewCell>
+                <SwipeView Margin="10,0">
+                    <SwipeView.RightItems>
+                        <SwipeItems>
+                            <SwipeItem Text="Delete"
+                                       BackgroundColor="Red"
+                                       Command="{Binding Source={x:Reference todoLists}, Path=BindingContext.RemoveCommand}"
+                                       CommandParameter="{Binding .}" />
+                        </SwipeItems>
+                    </SwipeView.RightItems>
+                    <Grid>
+                        <Label VerticalOptions="Center" Text="{Binding Name}" />
+                    </Grid>
+                </SwipeView>
+               </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+     <Button Grid.Row="1" Text="New Item" HorizontalOptions="End" Margin="10, 10" Command="{Binding AddCommand}" />
+    </Grid>
+</ContentPage>
